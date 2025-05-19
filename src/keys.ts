@@ -12,7 +12,6 @@ export const keys: Key[] = [
   },
   {
     value: "+/-",
-    action: "",
     classes: "bg-slate-500 hover:bg-slate-700 focus:bg-slate-700",
   },
   {
