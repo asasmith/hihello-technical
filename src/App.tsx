@@ -58,7 +58,8 @@ function App() {
         keys.map((key) => {
           const { action, styles, colSpan, label, value } = key;
 
-          const classes = `${styles} ${colSpan ? `col-span-${colSpan}` : ""}`;
+          const colSpanClass = colSpan ? `col-span-${colSpan}` : "";
+          const classes = `${styles} ${colSpanClass}`;
 
           if (action) {
             return (
