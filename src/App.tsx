@@ -9,7 +9,7 @@ function App() {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { action, value } = (e.target as HTMLButtonElement).dataset;
-    const isValidAction = action && ["+", "-", "*", "/"].includes(action);
+    const isOperator = action === "operator";
 
     if (action === "clear") {
       setInput("0");
@@ -17,14 +17,15 @@ function App() {
       return;
     }
 
-    if (input === "0" && isValidAction) {
-      setInput(`0${value}`);
+    if (action === "equals") {
+      const resultStr = `${calculate(input)}`;
+      setInput(resultStr);
+      setIsComplete(true);
       return;
     }
 
-    if (isComplete && isValidAction) {
-      setInput(`${input}${value}`);
-      setIsComplete(false);
+    if (input === "0" && isOperator) {
+      setInput(`0${value}`);
       return;
     }
 
@@ -34,16 +35,15 @@ function App() {
     }
 
     if (isComplete) {
-      setInput(`${value}`);
-      setIsComplete(false);
-      return;
-    }
-
-    if (action === "=") {
-      const resultStr = `${calculate(input)}`;
-      setInput(resultStr);
-      setIsComplete(true);
-      return;
+      if (isOperator) {
+        setInput(`${input}${value}`);
+        setIsComplete(false);
+        return;
+      } else {
+        setInput(`${value}`);
+        setIsComplete(false);
+        return;
+      }
     }
 
     setInput(`${input}${value}`);
@@ -56,29 +56,31 @@ function App() {
       </p>
       {keys.length &&
         keys.map((key) => {
-          const { action, classes, value } = key;
+          const { action, styles, colSpan, label, value } = key;
+
+          const classes = `${styles} ${colSpan ? `col-span-${colSpan}` : ""}`;
 
           if (action) {
             return (
               <button
-                className={`py-2 px-4 rounded-md ${classes}`}
+                className={classes}
                 onClick={handleClick}
-                data-value={action}
+                data-value={value}
                 data-action={action}
                 key={value}
               >
-                {value}
+                {label}
               </button>
             );
           }
           return (
             <button
-              className={`py-2 px-4 rounded-md ${classes}`}
+              className={classes}
               onClick={handleClick}
               data-value={value}
               key={value}
             >
-              {value}
+              {label}
             </button>
           );
         })}

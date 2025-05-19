@@ -10,7 +10,7 @@ export function calculate(input: string): number {
   const stack: number[] = [];
   let currentOperator = "+";
 
-  for (let item of items) {
+  for (const item of items) {
     if (["+", "-", "*", "/"].includes(item)) {
       currentOperator = item;
     } else {
